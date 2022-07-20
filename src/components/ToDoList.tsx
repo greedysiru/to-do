@@ -1,19 +1,27 @@
 import React, { useEffect } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { getItem } from "../utils/localStorageModule";
-import { Categories, categoryState, toDoSelector, toDoState } from "./atmos";
+import {
+  categoriesState,
+  categoryState,
+  toDoSelector,
+  toDoState,
+} from "./atmos";
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 
 function ToDoList() {
   const toDos = useRecoilValue(toDoSelector);
   const setToDos = useSetRecoilState(toDoState);
+  const setCategories = useSetRecoilState(categoriesState);
   const [category, setCategory] = useRecoilState(categoryState);
+  const categories = useRecoilValue(categoriesState);
   const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
     setCategory(event.currentTarget.value as any);
   };
   useEffect(() => {
     getItem("ToDos", setToDos);
+    getItem("Categories", setCategories);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -21,9 +29,11 @@ function ToDoList() {
       <h1>To Dos</h1>
       <hr />
       <select value={category} onInput={onInput}>
-        <option value={Categories.TO_DO}>To Do</option>
-        <option value={Categories.DOING}>Doing</option>
-        <option value={Categories.DONE}>Done</option>
+        {categories.map((category, index) => (
+          <option key={index} value={category}>
+            {category}
+          </option>
+        ))}
       </select>
       <CreateToDo />
       {toDos?.map((toDo) => (
