@@ -1,5 +1,6 @@
 import React from "react";
 import { useSetRecoilState } from "recoil";
+import { setItem } from "../utils/localStorageModule";
 import { Categories, IToDo, toDoState } from "./atmos";
 
 function ToDo({ text, category, id }: IToDo) {
@@ -11,11 +12,13 @@ function ToDo({ text, category, id }: IToDo) {
     setToDos((oldToDos) => {
       const targetIndex = oldToDos.findIndex((toDo) => toDo.id === id);
       const newToDo = { text, id, category: name as IToDo["category"] };
-      return [
+      const newToDos = [
         ...oldToDos.slice(0, targetIndex),
         newToDo,
         ...oldToDos.slice(targetIndex + 1),
       ];
+      setItem("ToDos", newToDos);
+      return newToDos;
     });
   };
 

@@ -1,15 +1,21 @@
-import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { Categories, categoryState, toDoSelector } from "./atmos";
+import React, { useEffect } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { getItem } from "../utils/localStorageModule";
+import { Categories, categoryState, toDoSelector, toDoState } from "./atmos";
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 
 function ToDoList() {
   const toDos = useRecoilValue(toDoSelector);
+  const setToDos = useSetRecoilState(toDoState);
   const [category, setCategory] = useRecoilState(categoryState);
   const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
     setCategory(event.currentTarget.value as any);
   };
+  useEffect(() => {
+    getItem("ToDos", setToDos);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div>
       <h1>To Dos</h1>

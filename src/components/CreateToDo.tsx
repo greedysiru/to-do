@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { setItem } from "../utils/localStorageModule";
 import { categoryState, toDoState } from "./atmos";
 
 interface IForm {
@@ -13,10 +14,11 @@ function CreateToDo() {
 
   const handleValid = ({ toDo }: IForm) => {
     // 새로운 배열을 return해야 함
-    setToDos((oldToDos) => [
-      { text: toDo, id: Date.now(), category },
-      ...oldToDos,
-    ]);
+    setToDos((oldToDos) => {
+      const newToDos = [{ text: toDo, id: Date.now(), category }, ...oldToDos];
+      setItem("ToDos", newToDos);
+      return newToDos;
+    });
     setValue("toDo", "");
   };
 

@@ -1,7 +1,8 @@
 import { atom, selector } from "recoil";
 
 // enumerable
-// 일련의 숫자를 문자로 표현해 줌
+// 일련의 숫자를 문자로 표현해 줌 -> 원칙적으로는 숫자
+// 문자열을 안정적으로 비교하거나 사용 가능
 export enum Categories {
   "TO_DO" = "TO_DO", // 0
   "DOING" = "DOING", // 1
